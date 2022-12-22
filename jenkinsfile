@@ -1,0 +1,14 @@
+node {
+    stage('Checkout') {
+        checkout([$class: 'GitSCM',
+            branches: [[name: '*/master']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs: [[url: 'git@github.com:your_repo.git']]])
+        def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+        def tagName = sh(script: 'git describe --exact-match --tags HEAD', returnStdout: true).trim()
+        println "Checked out branch: " + branchName
+        println "Tag: " + tagName
+    }
+}
